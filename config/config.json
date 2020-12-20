@@ -1,0 +1,4 @@
+{
+    "MONGO_URL": "mongodb+srv://admin:admin123456@realmcluster.6fb8i.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    "PORT": 3000
+}
