@@ -16,18 +16,24 @@ module.exports = {
         });
         form.parse(req, (err, fields, files) => {
             if(!err) {
-                return model.classify({
+                model.classify({
                     imageUrl: urlPic,
                 })
                 .then((predictions) => {
                     var marker = new Marker(fields);
-                    if(predictions[0].class == marker.markerCode)
-                        return res.json(marker);
-                    else return res.json(predictions);
+                    // if(predictions[0].class == marker.trafficSignCode)
+                    // {
+                    //     console.log(marker);
+                        return res.json(predictions);
+                    // }
+                    // else return res.json({
+                    //     "message": "Something went wrong!"
+                    // });
                 })
-                .catch((e) => {
-                    console.error(e);
-                    res.status(500).send("Something went wrong!")
+                .catch((err) => {
+                    res.json({
+                        "message": "Something went wrong!"
+                    });
                 });
             }
         });

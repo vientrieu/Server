@@ -9,13 +9,19 @@ const markerSchema = new Schema(
         longitude: {
             type: Number,
         },
-        markerCode: {
+        trafficSignCode: {
             type: String,
             length: 5
         },
         content: {
             type: String,
-            length: 255
+            length: 256
+        },
+        goodVote: {
+            type: Number,
+        },
+        badVote: {
+            type: Number,
         }
     },
     {
