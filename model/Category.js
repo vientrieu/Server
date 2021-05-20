@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 const categorySchema = new Schema(
     {
@@ -20,6 +19,5 @@ const categorySchema = new Schema(
         timestamps: true,
     }
 );
-// pointSchema.plugin(mongoosePaginate);
 const Category = mongoose.model("categories", categorySchema);
 module.exports = Category;

@@ -1,60 +1,110 @@
-const formidable = require('formidable');
 const Marker = require('../model/Marker');
+const TrafficSign = require('../model/TrafficSign');
 const TeachableMachine = require("@sashido/teachablemachine-node");
+const fs = require('fs');
+const { deleteMany } = require('../model/Marker');
 const model = new TeachableMachine({
-    modelUrl: "https://teachablemachine.withgoogle.com/models/cIyZY1Uae/"
+    modelUrl: "https://teachablemachine.withgoogle.com/models/sGo6vlJDm/"
 });
 module.exports = {
     save: async (req, res) => {
-        var form = new formidable.IncomingForm();
-        var urlPic;
-        form.on('fileBegin', function (name, file) {
-            file.path ='public/upload/' + file.name;
-        });
-        form.on('file', function (name, file) {
-            urlPic = 'http://localhost:3000/upload/' + file.name;
-        });
-        form.parse(req, (err, fields, files) => {
-            if(!err) {
-                model.classify({
-                    imageUrl: urlPic,
-                })
+        if (req.body.code === undefined) {
+            if (req.file === undefined) return res.status(400).json(
+                {
+                    "message": "Bad request!"
+                }
+            )
+            console.log(req.file);
+            var urlPic = 'http://localhost:3000/upload/' + req.file.filename;
+            model.classify({
+                imageUrl: urlPic
+            })
                 .then((predictions) => {
-                    var marker = new Marker(fields);
-                    // if(predictions[0].class == marker.trafficSignCode)
-                    // {
-                    //     console.log(marker);
-                        return res.json(predictions);
-                    // }
-                    // else return res.json({
-                    //     "message": "Something went wrong!"
-                    // });
+                    if (predictions[0].score >= 0.5) {
+                        var marker = new Marker(
+                            {
+                                latitude: req.body.latitude || null,
+                                longitude: req.body.longitude || null,
+                                trafficSignCode: predictions[0].class,
+                                goodVote: 0,
+                                badVote: 0
+                            }
+                        );
+                        marker.save()
+                            .catch((err) => { })
+                            .then(() => {
+                                var result = [];
+                                result.push(predictions[0]);
+                                res.status(201).json(result);
+                            })
+                    }
+                    else {
+                        res.json(predictions);
+                    }
+                    try {
+                        fs.unlinkSync(req.file.path);
+                    }
+                    catch (err) {
+                        console.error(err);
+                    }
                 })
                 .catch((err) => {
-                    res.json({
-                        "message": "Something went wrong!"
-                    });
+                    res.status(400).json({ "message": "Something went wrong!" });
                 });
-            }
-        });
-        
-        // const url = "https://media-blog.sashido.io/content/images/2020/09/SashiDo_Dog.jpg";
-        // marker.save()
-        // .then((result) => {
-        //     res.status(201).json(result);
-        // })
-        // .catch((ex) => {
-        //     res.status(404).json({"message": "marker is not saved!"});
-        // });
+        }
+        else {
+            var marker = new Marker(
+                {
+                    latitude: req.body.latitude || null,
+                    longitude: req.body.longitude || null,
+                    trafficSignCode: req.body.code,
+                    goodVote: 0,
+                    badVote: 0
+                }
+            );
+            marker.save()
+                .catch((err) => { })
+                .then((result) => {
+                    res.json(result);
+                })
+        }
     },
+
     find: async (req, res) => {
-        console.log("================");
-        Marker.find().lean()
-        .then((result) => {
-            res.status(200).json(result);
-        })
-        .catch((ex) => {
-            res.status(404).json({"message": "marker is not got!"});
-        });
+        Marker.find()
+            .lean()
+            .then(async (markers) => {
+                return Promise.all(markers.map((marker) => {
+                    return TrafficSign.findOne({ code: marker.trafficSignCode })
+                        .then((trafficSigns) => {
+                            return ({ ...marker, trafficSignName: trafficSigns.name });
+                        })
+                }));
+            })
+            .then(results => res.json(results))
+            .catch((ex) => {
+                res.status(404).json({ "message": "error!" });
+            });
+    },
+
+    findOne: async (req, res) => {
+        Marker.findOne({ _id: `${req.params.id}` })
+            .lean()
+            .then(async (marker) => {
+                return TrafficSign.findOne({ code: marker.trafficSignCode })
+                    .then((trafficSign) => {
+                        // console.log({ ...marker, trafficSignName: trafficSign.name });
+                        return ({ ...marker, trafficSignName: trafficSign.name });
+                    })
+            })
+            .then(result => res.json(result))
+            .catch((ex) => {
+                res.status(404).json({ "message": "error!" });
+            });
+    },
+
+    deleteMany: async (req, res) => {
+        Marker.deleteMany({}, (err) => { });
     }
+
 }

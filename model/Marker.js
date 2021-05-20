@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-// const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
+const autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose);
 const markerSchema = new Schema(
     {
         latitude: {
@@ -13,10 +14,6 @@ const markerSchema = new Schema(
             type: String,
             length: 5
         },
-        content: {
-            type: String,
-            length: 256
-        },
         goodVote: {
             type: Number,
         },
@@ -28,6 +25,6 @@ const markerSchema = new Schema(
         timestamps: true,
     }
 );
-// pointSchema.plugin(mongoosePaginate);
+markerSchema.plugin(autoIncrement.plugin, 'markers');
 const Marker = mongoose.model("markers", markerSchema);
 module.exports = Marker;

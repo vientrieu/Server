@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const markerController = require('../controller/marker.controller');
-router.get('/', (req, res) => {markerController.find(req, res)});
-router.post('/', (req, res) => {markerController.save(req, res)});
+const upload = require('../middleware/multer.mdw');
+router.get('/', (req, res) => { markerController.find(req, res) });
+router.get('/:id', (req, res) => { markerController.findOne(req, res) });
+router.post('/', upload.single('image'), (req, res) => { markerController.save(req, res) });
+// router.delete('/', (req, res) => { markerController.deleteMany(req, res) });
 module.exports = router;

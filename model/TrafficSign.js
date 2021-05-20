@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 const trafficSignSchema = new Schema(
     {
@@ -28,6 +27,5 @@ const trafficSignSchema = new Schema(
         timestamps: true,
     }
 );
-// pointSchema.plugin(mongoosePaginate);
 const TrafficSign = mongoose.model("trafficSigns", trafficSignSchema);
 module.exports = TrafficSign;
