@@ -15,7 +15,7 @@ require('./middleware/routes.mdw')(app);
 app.get('/', (req, res) => {
     res.send('aaaaaaaaaaaa');
 })
-app.listen(PORT||process.env.PORT, () => {
+app.listen(3000||process.env.PORT, () => {
     console.log(__dirname);
     console.log("server use port ", PORT);
 })
