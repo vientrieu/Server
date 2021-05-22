@@ -9,6 +9,6 @@ module.exports = (uri) => {
   );
   const connection = mongoose.connection;
   connection.once("open", () => {
-		console.log("MongoDB connect successfully");
+    console.log("MongoDB connect successfully");
   });
 };
