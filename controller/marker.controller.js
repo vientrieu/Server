@@ -77,7 +77,7 @@ module.exports = {
                 return Promise.all(markers.map((marker) => {
                     return TrafficSign.findOne({ code: marker.trafficSignCode })
                         .then((trafficSigns) => {
-                            return ({ ...marker, trafficSignName: trafficSigns.name });
+                            return ({ ...marker, trafficSignName: trafficSigns.name, danger: trafficSigns.categoryCode === "BBNH" ? true : false });
                         })
                 }));
             })
@@ -94,7 +94,8 @@ module.exports = {
                 return TrafficSign.findOne({ code: marker.trafficSignCode })
                     .then((trafficSign) => {
                         // console.log({ ...marker, trafficSignName: trafficSign.name });
-                        return ({ ...marker, trafficSignName: trafficSign.name });
+                        //return ({ ...marker, trafficSignName: trafficSign.name });
+			return ({ ...marker, trafficSignName: trafficSigns.name, danger: trafficSigns.categoryCode === "BBNH" ? true : false });
                     })
             })
             .then(result => res.json(result))
