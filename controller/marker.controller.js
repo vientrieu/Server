@@ -15,7 +15,7 @@ module.exports = {
                 }
             )
             console.log(req.file);
-            var urlPic = 'http://localhost:3000/upload/' + req.file.filename;
+            var urlPic = 'http://52.77.208.229/upload/' + req.file.filename;
             model.classify({
                 imageUrl: urlPic
             })
