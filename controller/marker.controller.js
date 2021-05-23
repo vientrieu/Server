@@ -2,7 +2,7 @@ const Marker = require('../model/Marker');
 const TrafficSign = require('../model/TrafficSign');
 const TeachableMachine = require('@sashido/teachablemachine-node');
 const util = require('../util/helper.util');
-const config = require('./config/config');
+const config = require('../config/config');
 const model = new TeachableMachine({
     modelUrl: 'https://teachablemachine.withgoogle.com/models/sGo6vlJDm/'
 });
