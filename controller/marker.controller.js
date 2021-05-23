@@ -2,7 +2,7 @@ const Marker = require('../model/Marker');
 const TrafficSign = require('../model/TrafficSign');
 const TeachableMachine = require('@sashido/teachablemachine-node');
 const util = require('../util/helper.util');
-const fs = require('fs');
+const config = require('./config/config');
 const model = new TeachableMachine({
     modelUrl: 'https://teachablemachine.withgoogle.com/models/sGo6vlJDm/'
 });
@@ -19,7 +19,7 @@ module.exports = {
                     if (req.file === undefined)
                         return res.status(400).json({ message: 'Bad request!' });
                     else {
-                        var urlPic = 'http://52.77.208.229/upload/' + req.file.filename;
+                        var urlPic = config.HOST + req.file.filename;
                         model.classify({ imageUrl: urlPic })
                             .then((predictions) => {
                                 if (predictions[0].score >= 0.5) {
@@ -41,7 +41,10 @@ module.exports = {
                                                 .then((result) => {
                                                     return res.json(result);
                                                 })
-                                        });
+                                        })
+                                        .catch(() => {
+                                            return res.status(400).json({ message: 'Your code error!' });
+                                        })
                                 }
                                 else {
                                     return res.json(predictions);
@@ -75,6 +78,9 @@ module.exports = {
                                 .then((result) => {
                                     return res.json(result);
                                 })
+                        })
+                        .catch(() => {
+                            return res.status(400).json({ message: 'Your code error!' });
                         })
                 };
             })

@@ -1,4 +1,5 @@
 {
     "MONGO_URL": "mongodb+srv://admin:admin123456@realmcluster.6fb8i.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    "PORT": 3000
+    "PORT": 3000,
+    "HOST": "http://52.77.208.229/upload/"
 }
