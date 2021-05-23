@@ -1,7 +1,4 @@
 {
     "MONGO_URL": "mongodb+srv://admin:admin123456@realmcluster.6fb8i.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    "PORT": 3000,
-    "AWS_ID": "AKIA3BOSZTZIJMTQCF7L",
-    "AWS_SECRET": "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",
-    "AWS_BUCKET_NAME": "mangvientrieubucket"
+    "PORT": 3000
 }

@@ -13,9 +13,9 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 require('./database/mongoDB')(URL);
 require('./middleware/routes.mdw')(app);
 app.get('/', (req, res) => {
-    res.send("Hello");
+    res.send('Hello');
 })
 app.listen(PORT || process.env.PORT, () => {
     console.log(__dirname);
-    console.log("server use port ", PORT);
+    console.log('server use port ', PORT);
 })
