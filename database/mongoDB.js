@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 module.exports = (uri) => {
   mongoose.connect(uri,
     {
@@ -8,7 +8,7 @@ module.exports = (uri) => {
     }
   );
   const connection = mongoose.connection;
-  connection.once("open", () => {
-    console.log("MongoDB connect successfully");
+  connection.once('open', () => {
+    console.log('MongoDB connect successfully');
   });
 };

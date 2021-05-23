@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const trafficSignSchema = new Schema(
     {
@@ -27,5 +27,5 @@ const trafficSignSchema = new Schema(
         timestamps: true,
     }
 );
-const TrafficSign = mongoose.model("trafficSigns", trafficSignSchema);
+const TrafficSign = mongoose.model('trafficSigns', trafficSignSchema);
 module.exports = TrafficSign;
