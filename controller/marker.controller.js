@@ -15,37 +15,9 @@ module.exports = {
                         util.deleteFile(req.file.path || null);
                     return res.status(400).json({ message: 'Markers already exist' });
                 }
-<<<<<<< HEAD
-            )
-            console.log(req.file);
-            var urlPic = 'http://52.77.208.229/upload/' + req.file.filename;
-            model.classify({
-                imageUrl: urlPic
-            })
-                .then((predictions) => {
-                    if (predictions[0].score >= 0.5) {
-                        var marker = new Marker(
-                            {
-                                latitude: req.body.latitude || null,
-                                longitude: req.body.longitude || null,
-                                trafficSignCode: predictions[0].class,
-                                goodVote: 0,
-                                badVote: 0
-                            }
-                        );
-                        marker.save()
-                            .catch((err) => { })
-                            .then(() => {
-                                var result = [];
-                                result.push(predictions[0]);
-                                res.status(201).json(result);
-                            })
-                    }
-=======
                 else if (req.body.code === undefined) {
                     if (req.file === undefined)
                         return res.status(400).json({ message: 'Bad request!' });
->>>>>>> 4ed2c69a975019919404b6524bfc5fe6d653fac1
                     else {
                         var urlPic = 'http://localhost:3000/upload/' + req.file.filename;
                         model.classify({ imageUrl: urlPic })
