@@ -47,7 +47,7 @@ module.exports = {
                         return res.status(400).json({ message: 'Bad request!' });
 >>>>>>> 4ed2c69a975019919404b6524bfc5fe6d653fac1
                     else {
-                        var urlPic = 'http://52.77.208.229/upload/' + req.file.filename;
+                        var urlPic = 'http://localhost:3000/upload/' + req.file.filename;
                         model.classify({ imageUrl: urlPic })
                             .then((predictions) => {
                                 if (predictions[0].score >= 0.5) {
