@@ -2,10 +2,11 @@ const Marker = require('../model/Marker');
 const TrafficSign = require('../model/TrafficSign');
 const TeachableMachine = require('@sashido/teachablemachine-node');
 const util = require('../util/helper.util');
-const config = require('../config/config');
+const config = require('../config/config.json');
 const model = new TeachableMachine({
     modelUrl: 'https://teachablemachine.withgoogle.com/models/sGo6vlJDm/'
 });
+var array = [];
 module.exports = {
     save: async (req, res) => {
         Marker.findOne({ latitude: req.body.latitude, longitude: req.body.longitude })
@@ -39,7 +40,8 @@ module.exports = {
                                             marker.save()
                                                 .catch((err) => { })
                                                 .then((result) => {
-                                                    return res.json(result);
+                                                    array.push(result);
+                                                    return res.json(array);
                                                 })
                                         })
                                         .catch(() => {
@@ -76,7 +78,8 @@ module.exports = {
                             marker.save()
                                 .catch((err) => { })
                                 .then((result) => {
-                                    return res.json(result);
+                                    array.push(result);
+                                    return res.json(array);
                                 })
                         })
                         .catch(() => {
