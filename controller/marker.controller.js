@@ -4,7 +4,7 @@ const TeachableMachine = require('@sashido/teachablemachine-node');
 const util = require('../util/helper.util');
 const config = require('../config/config.json');
 const model = new TeachableMachine({
-    modelUrl: 'https://teachablemachine.withgoogle.com/models/sGo6vlJDm/'
+    modelUrl: 'https://teachablemachine.withgoogle.com/models/tWFiL3VM0/'
 });
 var array = [];
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
                         var urlPic = config.HOST + req.file.filename;
                         model.classify({ imageUrl: urlPic })
                             .then((predictions) => {
-                                if (predictions[0].score >= 0.5) {
+                                if (predictions[0].score >= 0.7) {
                                     TrafficSign.findOne({ code: predictions[0].class })
                                         .then((trafficSign) => {
                                             var marker = new Marker(
@@ -49,7 +49,10 @@ module.exports = {
                                         })
                                 }
                                 else {
-                                    return res.json(predictions);
+                                    array.push(predictions[0]);
+                                    array.push(predictions[1]);
+                                    array.push(predictions[2]);
+                                    return res.json(array);
                                 };
                             })
                             .then(() => util.deleteFile(req.file.path || null))
