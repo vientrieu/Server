@@ -6,7 +6,7 @@ const config = require('../config/config.json');
 const model = new TeachableMachine({
     modelUrl: 'https://teachablemachine.withgoogle.com/models/tWFiL3VM0/'
 });
-var array = [];
+
 module.exports = {
     save: async (req, res) => {
         Marker.findOne({ latitude: req.body.latitude, longitude: req.body.longitude })
@@ -24,6 +24,7 @@ module.exports = {
                         model.classify({ imageUrl: urlPic })
                             .then((predictions) => {
                                 if (predictions[0].score >= 0.7) {
+                                    console.log("ifffffffffff");
                                     TrafficSign.findOne({ code: predictions[0].class })
                                         .then((trafficSign) => {
                                             var marker = new Marker(
@@ -40,19 +41,20 @@ module.exports = {
                                             marker.save()
                                                 .catch((err) => { })
                                                 .then((result) => {
-                                                    array.push(result);
-                                                    return res.json(array);
+                                                    var rs = [];
+                                                    rs.push(result);
+                                                    return res.json(rs);
                                                 })
                                         })
                                         .catch(() => {
                                             return res.status(400).json({ message: 'Your code error!' });
                                         })
-                                }
-                                else {
-                                    array.push(predictions[0]);
-                                    array.push(predictions[1]);
-                                    array.push(predictions[2]);
-                                    return res.json(array);
+                                } else {
+                                    let rs = [];
+                                    rs.push(predictions[0]);
+                                    rs.push(predictions[1]);
+                                    rs.push(predictions[2]);
+                                    return res.json(rs);
                                 };
                             })
                             .then(() => util.deleteFile(req.file.path || null))
@@ -81,8 +83,9 @@ module.exports = {
                             marker.save()
                                 .catch((err) => { })
                                 .then((result) => {
-                                    array.push(result);
-                                    return res.json(array);
+                                    let rs = [];
+                                    rs.push(result);
+                                    return res.json(rs);
                                 })
                         })
                         .catch(() => {
