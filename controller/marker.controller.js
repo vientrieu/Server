@@ -4,7 +4,7 @@ const TeachableMachine = require('@sashido/teachablemachine-node');
 const util = require('../util/helper.util');
 const config = require('../config/config.json');
 const model = new TeachableMachine({
-    modelUrl: 'https://teachablemachine.withgoogle.com/models/tWFiL3VM0/'
+    modelUrl: 'https://teachablemachine.withgoogle.com/models/GWw56fubE/'
 });
 
 module.exports = {
@@ -24,7 +24,6 @@ module.exports = {
                         model.classify({ imageUrl: urlPic })
                             .then((predictions) => {
                                 if (predictions[0].score >= 0.7) {
-                                    console.log("ifffffffffff");
                                     TrafficSign.findOne({ code: predictions[0].class })
                                         .then((trafficSign) => {
                                             var marker = new Marker(
